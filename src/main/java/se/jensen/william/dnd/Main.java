@@ -1,8 +1,11 @@
 package se.jensen.william.dnd;
 
 public class Main {
-    public static void main(String[] args) {
+    static void main() {
+        // Creates instance and runs the game
         Game game = new Game();
         game.start();
     }
 }
+
+
