@@ -1,15 +1,13 @@
 package se.jensen.william.dnd;
 
-import java.util.InputMismatchException;
-import java.util.Random;
 import javax.swing.JOptionPane;
 
 public class Game {
-    public static void start(){
+    public void start(){
 
         // Creates player models
-        Players.Player player1 = new Players.Player("","",100,0);
-        Players.Player player2 = new Players.Player("","",100, 0);
+        Players.Player player1 = new Players.Player("","",24,0);
+        Players.Player player2 = new Players.Player("","",24, 0);
 
         boolean validNamePlayer1 = false;
         boolean validNamePlayer2 = false;
@@ -39,58 +37,80 @@ public class Game {
                 }
             }
 
-            JOptionPane.showMessageDialog(null, player1.getFullName() + " vs " + player2.getFullName()
-                                            + "\n                FIGHT!");
-
-        // RULES
+        // RULES in TextBlock
         JOptionPane.showMessageDialog(null,
-                "RULES\n" + "* Two player throws 2 dice to damage the opponent" +
-                        "\n* Combined dice numbers = DMG" +
-                        "\n* Player with most damage hurts his opponent" +
-                        "\n* Each Player has 100HP, defeated when HP = 0" +
-                        "\n* If both dice hit '6' this equals in a CRIT causing 2x DMG" +
-                        "\n* Last Player standing wins!");
+                """
+                        RULES
+                        * Two player throws 2 dice to damage the opponent
+                        
+                        * Combined dice numbers = DMG
+                        
+                        * Player with most damage hurts his opponent
+                        
+                        * Each Player has 24HP, defeated when HP = 0
+                        
+                        * If both dice hit '6' this equals in a CRIT causing 2x DMG
+                        
+                        * Last Player standing wins!""");
 
         // Battle starts
         Dice dice = new Dice();
 
-        JOptionPane.showMessageDialog(null, player1.getFirstName() + " Your turn! Throw your dice!");
-        int roll1 = dice.roll();
-        JOptionPane.showMessageDialog(null, "You threw a: " + roll1 + "\nThrow again!");
-        int roll2 = dice.roll();
-        JOptionPane.showMessageDialog(null, "You threw a: " + roll2);
-        JOptionPane.showMessageDialog(null, "Combined damage: " + dice.addToDmg(roll1, roll2));
-        player1.setDmg(dice.addToDmg(roll1, roll2));
+        while(true) {
 
-        JOptionPane.showMessageDialog(null, player2.getFirstName() + " Your turn! Throw your dice!");
-        roll1 = dice.roll();
-        JOptionPane.showMessageDialog(null, "You threw a: " + roll1 + "\nThrow again!");
-        roll2 = dice.roll();
-        JOptionPane.showMessageDialog(null, "You threw a: " + roll2);
-        JOptionPane.showMessageDialog(null, "Combined damage: " + dice.addToDmg(roll1, roll2));
-        player2.setDmg(dice.addToDmg(roll1, roll2));
+            String choice = JOptionPane.showInputDialog(null, "Type 'Play' to play game." +
+                                                                                    "\nType 'Exit' to exit game.");
 
-        if (player1.getDmg() > player2.getDmg()) {
-            JOptionPane.showMessageDialog(null, player1.getFirstName() + " Damage: "  + player1.getDmg()
-                                            + " - " +  player2.getFirstName() + " Damage: "  + player2.getDmg()
-                                            + "\n" + player1.getFirstName() + " Wins!");
+            if(choice.equalsIgnoreCase("play")) {
 
-            player2.setHp(player2.getHp() - player1.getDmg());
-            JOptionPane.showMessageDialog(null, player2.getFirstName() + "HP: "  + player2.getHp());
+                while (player1.getHp() > 0 && player2.getHp() > 0) {
+                    JOptionPane.showMessageDialog(null, player1.getFirstName() + " Your turn! Throw your dice!");
+                    int roll1 = dice.roll();
+                    JOptionPane.showMessageDialog(null, "You threw a: " + roll1 + "\nThrow again!");
+                    int roll2 = dice.roll();
+                    JOptionPane.showMessageDialog(null, "You threw a: " + roll2);
+                    JOptionPane.showMessageDialog(null, "Combined damage: " + dice.addToDmg(roll1, roll2));
+                    player1.setDmg(dice.addToDmg(roll1, roll2));
+
+                    JOptionPane.showMessageDialog(null, player2.getFirstName() + " Your turn! Throw your dice!");
+                    roll1 = dice.roll();
+                    JOptionPane.showMessageDialog(null, "You threw a: " + roll1 + "\nThrow again!");
+                    roll2 = dice.roll();
+                    JOptionPane.showMessageDialog(null, "You threw a: " + roll2);
+                    JOptionPane.showMessageDialog(null, "Combined damage: " + dice.addToDmg(roll1, roll2));
+                    player2.setDmg(dice.addToDmg(roll1, roll2));
+
+                    if (player1.getDmg() > player2.getDmg()) {
+                        JOptionPane.showMessageDialog(null, player1.getFirstName() + " Damage: " + player1.getDmg()
+                                + " - " + player2.getFirstName() + " Damage: " + player2.getDmg()
+                                + "\n" + player1.getFirstName() + " Wins this round!");
+
+                        player2.setHp(player2.getHp() - player1.getDmg());
+                        JOptionPane.showMessageDialog(null, player2.getFirstName() + " HP: " + player2.getHp());
+                    } else if (player2.getDmg() > player1.getDmg()) {
+                        JOptionPane.showMessageDialog(null, player1.getFirstName() + " Damage: " + player1.getDmg()
+                                + " - " + player2.getFirstName() + " Damage: " + player2.getDmg()
+                                + "\n" + player2.getFirstName() + " Wins this round!");
+
+                        player1.setHp(player1.getHp() - player2.getDmg());
+                        JOptionPane.showMessageDialog(null, player1.getFirstName() + " HP: " + player1.getHp());
+                    } else {
+                        JOptionPane.showMessageDialog(null, player1.getFirstName() + " Damage: " + player1.getDmg()
+                                + " - " + player2.getFirstName() + " Damage: " + player2.getDmg()
+                                + "\nIt's a tie! No damage delivered!");
+                    }
+                }
+
+                if (player1.getHp() == 0) {
+                    JOptionPane.showMessageDialog(null, player2.getFullName() + " Wins!");
+                    JOptionPane.showMessageDialog(null, "Game Over!");
+                } else if (player2.getHp() == 0) {
+                    JOptionPane.showMessageDialog(null, player1.getFullName() + " Wins!");
+                    JOptionPane.showMessageDialog(null, "Game Over!");
+                }
+            } else if (choice.equalsIgnoreCase("exit")) {
+                System.exit(0);
+            }
         }
-        else if (player2.getDmg() > player1.getDmg()) {
-            JOptionPane.showMessageDialog(null, player1.getFirstName() + " Damage: "  + player1.getDmg()
-                    + " - " +  player2.getFirstName() + " Damage: "  + player2.getDmg()
-                    + "\n" + player2.getFirstName() + " Wins!");
-
-            player1.setHp(player1.getHp() - player2.getDmg());
-            JOptionPane.showMessageDialog(null, player1.getFirstName() + "HP: "  + player1.getHp());
-        }
-        else {
-            JOptionPane.showMessageDialog(null, player1.getFirstName() + " Damage: "  + player1.getDmg()
-                    + " - " +  player2.getFirstName() + " Damage: "  + player2.getDmg()
-                    + "\nIt's a tie! No damage delivered!");
-        }
-
     }
 }
