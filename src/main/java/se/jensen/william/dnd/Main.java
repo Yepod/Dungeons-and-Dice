@@ -1,9 +1,8 @@
 package se.jensen.william.dnd;
 
-import javax.swing.JOptionPane;
-
-public class GameMain {
+public class Main {
     public static void main(String[] args) {
-        Intro.GameIntro();
+        Game game = new Game();
+        game.start();
     }
 }
