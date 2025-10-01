@@ -65,7 +65,8 @@ public class Game {
                 player1.setHp(24);
                 player2.setHp(24);
             } else if (choice.equalsIgnoreCase("exit")) {
-                System.exit(0);
+                JOptionPane.showMessageDialog(null, "Goodbye!");
+                break;
             }
 
             while (player1.getHp() > 0 && player2.getHp() > 0) {
