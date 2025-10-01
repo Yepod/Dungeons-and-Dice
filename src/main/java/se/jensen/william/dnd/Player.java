@@ -1,15 +1,10 @@
 package se.jensen.william.dnd;
 
-import javax.swing.*;
-
-public class Players {
-
-    // Player Parameters
-    static class Player {
-        private String firstName;
-        private String lastName;
-        private int hp;
-        private int dmg;
+public class Player {
+    private String firstName;
+    private String lastName;
+    private int hp;
+    private int dmg;
 
         // Constructor
         public Player(String firstName, String lastName, int hp, int dmg) {
@@ -69,4 +64,3 @@ public class Players {
             this.dmg = dmg;
         }
     }
-}
