@@ -3,9 +3,9 @@ package se.jensen.william.dnd;
 import java.util.Random;
 
 public class Dice {
+    private final Random random = new Random();
 
     public int roll() {
-        Random random = new Random();
         return random.nextInt(1, 7);
     }
 
